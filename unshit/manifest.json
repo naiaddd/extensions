@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Declutter",
+  "version": "0.1.0",
+  "description": "Hide short videos and block specific creators on YouTube.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "yt-declutter@local.dev",
+      "strict_min_version": "115.0"
+    }
+  },
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "js": ["content.js"],
+      "css": ["list.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YouTube Declutter"
+  }
+}

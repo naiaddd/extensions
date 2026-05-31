@@ -1,0 +1,84 @@
+/* One column via YouTube's own grid variable */
+html.ytd-listmode ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 1 !important;
+}
+html.ytd-listmode ytd-rich-item-renderer {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 4px 0 !important;
+}
+
+/* ---- New lockup component (current homepage / channel grids) ---- */
+/* Lay each card out as a horizontal row: thumb left, text right */
+html.ytd-listmode ytd-rich-item-renderer .ytLockupViewModelHost {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 12px;
+}
+html.ytd-listmode ytd-rich-item-renderer a.ytLockupViewModelContentImage {
+  flex: 0 0 160px !important;
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+}
+html.ytd-listmode ytd-rich-item-renderer a.ytLockupViewModelContentImage yt-thumbnail-view-model {
+  width: 100% !important;
+}
+html.ytd-listmode ytd-rich-item-renderer .ytLockupViewModelMetadata {
+  flex: 1 1 auto !important;
+  min-width: 0;
+}
+
+/* Text-only variant: drop the thumbnail (and its ripple overlay) entirely */
+html.ytd-listmode-textonly ytd-rich-item-renderer a.ytLockupViewModelContentImage,
+html.ytd-listmode-textonly ytd-rich-item-renderer yt-thumbnail-view-model,
+html.ytd-listmode-textonly ytd-rich-item-renderer yt-touch-feedback-shape {
+  display: none !important;
+}
+
+/* Hide-avatars variant: drop the creator avatar from the metadata block */
+html.ytd-listmode-noavatars ytd-rich-item-renderer .ytLockupMetadataViewModelAvatar {
+  display: none !important;
+}
+
+/* Hide loading skeletons: a grid card with no real lockup yet is just a grey
+   placeholder (full-column thumbnail / avatar / line shimmer) that's out of
+   scale with the list. Hidden while loading; reappears once content lands. */
+html.ytd-listmode ytd-rich-grid-renderer ytd-rich-item-renderer:not(:has(yt-lockup-view-model)) {
+  display: none !important;
+}
+html.ytd-listmode ytd-rich-grid-renderer ytd-ghost-grid-renderer {
+  display: none !important;
+}
+
+/* Lowercase variant: lower-case the title and metadata text */
+html.ytd-listmode-lowercase ytd-rich-item-renderer .ytLockupMetadataViewModelTextContainer,
+html.ytd-listmode-lowercase ytd-rich-item-renderer #details,
+html.ytd-listmode-lowercase ytd-rich-item-renderer #meta {
+  text-transform: lowercase !important;
+}
+
+/* ---- Legacy card component (fallback for surfaces not yet migrated) ---- */
+html.ytd-listmode ytd-rich-item-renderer #dismissible {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 12px;
+}
+html.ytd-listmode ytd-rich-item-renderer ytd-thumbnail,
+html.ytd-listmode ytd-rich-item-renderer #thumbnail {
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
+  flex-shrink: 0;
+}
+html.ytd-listmode ytd-rich-item-renderer #details,
+html.ytd-listmode ytd-rich-item-renderer #meta {
+  flex: 1 !important;
+  min-width: 0;
+}
+html.ytd-listmode-textonly ytd-rich-item-renderer ytd-thumbnail,
+html.ytd-listmode-textonly ytd-rich-item-renderer #thumbnail {
+  display: none !important;
+}
