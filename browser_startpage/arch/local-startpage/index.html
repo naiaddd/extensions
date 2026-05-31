@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Meta details for SEO and Page Information -->
+    <title>New Tab</title>
+    <meta name="description" content="A highly portable, secure, local-first browser startpage.">
+    
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & THEME
+           ========================================================================== */
+        :root {
+            /* Color Palette */
+            --bg-color: #09090b; /* Deep obsidian background */
+            --text-main: #fafafa;
+            --text-muted: #a1a1aa;
+            
+            /* Glassmorphism Surfaces */
+            --surface-bg: rgba(24, 24, 27, 0.6);
+            --surface-hover: rgba(39, 39, 42, 0.8);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-highlight: rgba(255, 255, 255, 0.15);
+            
+            /* Accents */
+            --accent-color: #818cf8;
+            --accent-glow: rgba(129, 140, 248, 0.2);
+            
+            /* Typography & Animation */
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ==========================================================================
+           BASE STYLES
+           ========================================================================== */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            /* Subtle radial gradients to create depth */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(129, 140, 248, 0.04), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(192, 132, 252, 0.04), transparent 25%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Main Wrapper */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+            box-sizing: border-box;
+            /* Entrance animation */
+            animation: slide-up-fade 0.8s ease-out forwards;
+        }
+
+        @keyframes slide-up-fade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           SEARCH BAR
+           ========================================================================== */
+        .search-container {
+            margin-bottom: 4rem;
+            width: 100%;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 9999px; /* Pill shape */
+            padding: 0.5rem 0.75rem;
+            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-smooth);
+        }
+
+        /* Interactive focus states for the search bar */
+        .search-form:focus-within {
+            border-color: rgba(129, 140, 248, 0.5);
+            box-shadow: 0 0 0 2px var(--accent-glow), 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+            background-color: rgba(24, 24, 27, 0.85);
+            transform: translateY(-2px);
+        }
+
+        /* Search Engine Dropdown */
+        .search-engine-select-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Custom dropdown arrow */
+        .search-engine-select-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 14px;
+            width: 0; 
+            height: 0; 
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-muted);
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .search-form:focus-within .search-engine-select-wrapper::after {
+            border-top-color: var(--accent-color);
+        }
+
+        .search-engine-select {
+            background-color: transparent;
+            color: var(--text-main);
+            border: none;
+            padding: 0.5rem 2.2rem 0.5rem 1rem; /* Extra padding for arrow */
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition-smooth);
+        }
+
+        .search-engine-select option {
+            background-color: #18181b; /* Solid background for dropdown items */
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        /* Search Input Field */
+        .search-input {
+            flex-grow: 1;
+            background-color: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 0.75rem 1.25rem;
+            font-size: 1.1rem;
+            font-family: inherit;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Search Submit Button */
+        .search-button {
+            background-color: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem;
+            margin-right: 0.25rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .search-button:hover, .search-form:focus-within .search-button {
+            color: var(--accent-color);
+        }
+
+        .search-button:active {
+            transform: scale(0.9);
+        }
+
+        /* ==========================================================================
+           BOOKMARKS GRID
+           ========================================================================== */
+        .bookmarks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        /* Individual Bookmark Card */
+        .bookmark-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--text-main);
+            background-color: var(--surface-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Slight top highlight for depth */
+            border-radius: 20px;
+            padding: 1.5rem 1rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            box-shadow: 0 4px 20px -2px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            /* Elements start transparent for JS staggered animation */
+            opacity: 0;
+        }
+
+        /* Subtle glare effect on hover */
+        .bookmark-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+            pointer-events: none;
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        /* Hover interactions */
+        .bookmark-card:hover {
+            background-color: var(--surface-hover);
+            border-color: var(--border-highlight);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px -5px rgba(0,0,0,0.5);
+        }
+
+        .bookmark-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Icon Container */
+        .bookmark-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            background-color: #27272a; /* Solid fallback base */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 4px 10px rgba(0,0,0,0.3);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .bookmark-card:hover .bookmark-icon-wrapper {
+            transform: scale(1.08) rotate(-3deg);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2), 0 6px 14px rgba(0,0,0,0.4);
+        }
+
+        .bookmark-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px; /* Internal breathing room for the image */
+            box-sizing: border-box;
+            transition: var(--transition-smooth);
+        }
+
+        /* Fallback UI styling */
+        .bookmark-fallback {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-family: var(--font-family);
+        }
+
+        /* Link Label */
+        .bookmark-name {
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .bookmark-card:hover .bookmark-name {
+            color: var(--text-main);
+        }
+
+        /* ==========================================================================
+           UTILITIES
+           ========================================================================== */
+        /* Loader state */
+        #loader {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error state formatting */
+        .error-message {
+            color: #ef4444; /* Red accent for errors */
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <!-- Search Section -->
+        <div class="search-container">
+            <form id="search-form" class="search-form">
+                
+                <!-- Engine Selector -->
+                <div class="search-engine-select-wrapper">
+                    <select id="search-engine-select" class="search-engine-select" aria-label="Select Search Engine">
+                        <option value="duckduckgo">DuckDuckGo</option>
+                        <option value="google">Google</option>
+                    </select>
+                </div>
+                
+                <!-- Query Input -->
+                <input 
+                    type="text" 
+                    id="search-input" 
+                    class="search-input" 
+                    placeholder="Search the web..." 
+                    aria-label="Search Input" 
+                    autocomplete="off" 
+                    autofocus
+                >
+                
+                <!-- Submit Action -->
+                <button type="submit" class="search-button" aria-label="Search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        
+        <!-- Loading Indicator -->
+        <div id="loader">
+            <div class="spinner"></div>
+            <span>Loading config...</span>
+        </div>
+        
+        <!-- Bookmarks Container -->
+        <div id="bookmarks-grid" class="bookmarks-grid">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+    </main>
+
+    <script>
+        /**
+         * ==========================================================================
+         * APPLICATION LOGIC
+         * ==========================================================================
+         */
+        document.addEventListener('DOMContentLoaded', async () => {
+            // DOM Elements
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const searchEngineSelect = document.getElementById('search-engine-select');
+            const bookmarksGrid = document.getElementById('bookmarks-grid');
+            const loader = document.getElementById('loader');
+
+            // Search engine query prefix mapping
+            const ENGINES = {
+                'duckduckgo': 'https://duckduckgo.com/?q=',
+                'google': 'https://www.google.com/search?q='
+            };
+
+            // Selected palette for fallback icons (matching dark aesthetic)
+            const FALLBACK_COLORS = [
+                '#ef4444', // Red
+                '#f97316', // Orange
+                '#eab308', // Yellow
+                '#22c55e', // Green
+                '#06b6d4', // Cyan
+                '#3b82f6', // Blue
+                '#8b5cf6', // Violet
+                '#d946ef'  // Fuchsia
+            ];
+
+            /**
+             * Handles form submission to execute the search query.
+             */
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Prevent default HTML form navigation
+                const query = encodeURIComponent(searchInput.value.trim());
+                
+                if (query) {
+                    const engineKey = searchEngineSelect.value;
+                    const destinationUrl = `${ENGINES[engineKey]}${query}`;
+                    // Redirect the window to the composed search URL
+                    window.location.href = destinationUrl;
+                }
+            });
+
+            /**
+             * Extracts the clean domain name from a URL for fallback calculations.
+             */
+            const extractDomain = (urlStr) => {
+                try {
+                    return new URL(urlStr).hostname.replace(/^www\./, '');
+                } catch (e) {
+                    return urlStr; // Return as-is if URL parsing fails
+                }
+            };
+
+            /**
+             * Selects a consistent color from the palette based on the character code.
+             */
+            const getFallbackColor = (letter) => {
+                const index = letter.charCodeAt(0) % FALLBACK_COLORS.length;
+                return FALLBACK_COLORS[index];
+            };
+
+            /**
+             * Generates a single bookmark DOM node.
+             */
+            const createBookmarkCard = (link, index) => {
+                // Main card wrapper <a>
+                const card = document.createElement('a');
+                card.className = 'bookmark-card';
+                card.href = link.url;
+                
+                // Staggered CSS animation for entry
+                card.style.animation = `slide-up-fade 0.5s ease-out ${0.1 + (index * 0.05)}s forwards`;
+                
+                // Icon Wrapper
+                const iconWrapper = document.createElement('div');
+                iconWrapper.className = 'bookmark-icon-wrapper';
+                
+                // Determine fallback data
+                const domain = extractDomain(link.url);
+                // Use explicit name or fall back to domain, then get the first letter
+                const firstLetter = (link.name || domain).charAt(0).toUpperCase();
+
+                // Setup Icon vs Fallback rendering
+                if (link.icon) {
+                    const img = document.createElement('img');
+                    img.className = 'bookmark-icon';
+                    img.src = link.icon;
+                    img.alt = `${link.name} icon`;
+                    
+                    // Critical: Trigger fallback UI if the image fails to load
+                    img.onerror = () => {
+                        iconWrapper.innerHTML = ''; // Clear broken image
+                        iconWrapper.style.backgroundColor = getFallbackColor(firstLetter);
+                        const fallbackText = document.createElement('span');
+                        fallbackText.className = 'bookmark-fallback';
+                        fallbackText.textContent = firstLetter;
+                        iconWrapper.appendChild(fallbackText);
+                    };
+                    
+                    iconWrapper.appendChild(img);
+                } else {
+                    // Direct fallback rendering if no icon is specified
+                    iconWrapper.style.backgroundColor = getFallbackColor(firstLetter);
+                    const fallbackText = document.createElement('span');
+                    fallbackText.className = 'bookmark-fallback';
+                    fallbackText.textContent = firstLetter;
+                    iconWrapper.appendChild(fallbackText);
+                }
+
+                // Bookmark Label
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'bookmark-name';
+                nameSpan.textContent = link.name;
+
+                // Assemble the card
+                card.appendChild(iconWrapper);
+                card.appendChild(nameSpan);
+                
+                return card;
+            };
+
+            /**
+             * Fetches and applies the configuration data.
+             */
+            const init = async () => {
+                try {
+                    // Use fetch API to load the local config.json
+                    const response = await fetch('config.json');
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    
+                    const config = await response.json();
+
+                    // Apply configured search engine default
+                    if (config.search_engine && ENGINES[config.search_engine]) {
+                        searchEngineSelect.value = config.search_engine;
+                    }
+
+                    // Remove loading state
+                    loader.style.display = 'none';
+                    
+                    // Render the bookmark grid
+                    if (config.links && Array.isArray(config.links)) {
+                        config.links.forEach((link, idx) => {
+                            const cardNode = createBookmarkCard(link, idx);
+                            bookmarksGrid.appendChild(cardNode);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Failed to initialize startpage:', error);
+                    // Display error state to the user
+                    loader.className = 'error-message';
+                    loader.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        <span>Error loading config.json. Please verify the file exists and is valid.</span>
+                    `;
+                }
+                
+                // Ensure focus remains on the search input for immediate typing
+                searchInput.focus();
+            };
+
+            // Boot the application
+            init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "manifest_version": 3,
+  "name": "Local Startpage",
+  "version": "1.0",
+  "description": "A completely offline, secure custom new tab override.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}

@@ -1,0 +1,75 @@
+{
+    "search_engine": "duckduckgo",
+    "links": [
+        {
+            "name": "X.com",
+            "url": "https://x.com",
+            "icon": "icons/x.com.ico"
+        },
+        {
+            "name": "Mail.google.com",
+            "url": "https://mail.google.com",
+            "icon": "icons/mail.google.com.ico"
+        },
+        {
+            "name": "Boards.4chan.org",
+            "url": "https://boards.4chan.org",
+            "icon": "icons/boards.4chan.org.png"
+        },
+        {
+            "name": "X1337x.cc",
+            "url": "https://x1337x.cc",
+            "icon": ""
+        },
+        {
+            "name": "Youtube.com",
+            "url": "https://youtube.com",
+            "icon": "icons/youtube.com.png"
+        },
+        {
+            "name": "Google.com",
+            "url": "https://google.com",
+            "icon": "icons/google.com.ico"
+        },
+        {
+            "name": "Gemini.google.com",
+            "url": "https://gemini.google.com",
+            "icon": "icons/gemini.google.com.png"
+        },
+        {
+            "name": "Amazon.com.au",
+            "url": "https://amazon.com.au",
+            "icon": "icons/amazon.com.au.ico"
+        },
+        {
+            "name": "Centrelink.gov.au",
+            "url": "https://centrelink.gov.au",
+            "icon": "icons/centrelink.gov.au.ico"
+        },
+        {
+            "name": "Git",
+            "url": "https://github.com",
+            "icon": "icons/github.com.png"
+        },
+        {
+            "name": "git/naiad",
+            "url": "https://github.com/naiaddd",
+            "icon": "icons/github.com.png"
+        },
+        {
+            "name": "Music",
+            "url": "https://music.youtube.com/",
+            "icon": "icons/music.youtube.com.png"
+        },
+        {
+            "name": "telegram",
+            "url": "https://web.telegram.org/a/",
+            "icon": "icons/web.telegram.org.ico"
+        },
+        {
+            "name": "2142",
+            "url": "https://battlefield2142.co/",
+            "icon": "icons/battlefield2142.co.png"
+        }
+    ]
+}

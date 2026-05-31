@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Local Startpage",
+  "version": "1.1",
+  "description": "A completely offline, secure custom new tab override with dynamic storage.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{e1234567-89ab-cdef-0123-456789abcdef}"
+    }
+  },
+  "permissions": [
+    "storage"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
